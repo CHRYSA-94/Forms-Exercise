@@ -1,0 +1,93 @@
+<mat-card >
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="container">
+  <mat-card-header>
+    <mat-card-title>Form Exercise</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+
+       <div formGroupName="personalInformation">
+        <div class="row">
+          <mat-form-field appearance="standard">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName">
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="standard">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName">
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="standard" >
+            <mat-label>What's your age?</mat-label>
+            <mat-select formControlName="age">
+              <mat-option *ngFor="let option of ageOptions" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+       </div>
+
+
+      <div class="row radio-container">
+        <label id="example-radio-group-label">What's your gender?</label>
+        <mat-radio-group formControlName="gender"
+          aria-labelledby="example-radio-group-label">
+          <mat-radio-button  *ngFor="let gender of genders" [value]="gender" class="radio-buttons">
+            {{gender}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="row"
+      *ngIf="myForm.get('gender').value === 'female'">
+      <mat-form-field appearance="standard" class="example-form-field">
+        <mat-label>When is your birthday?</mat-label>
+        <input matInput [matDatepicker]="datepicker" formControlName="genderChoice">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+      </div>
+      <div class="row"
+      *ngIf="myForm.get('gender').value === 'male'">
+      <p>Do you like football?</p>
+      <mat-slide-toggle formControlName="genderChoice"
+          class="example-margin"
+          [color]="accent"
+          >
+        Yes!
+      </mat-slide-toggle>
+      </div>
+      <div class="row"
+      formArrayName="foods">
+        <label>What are your favorite foods?</label>
+        <button mat-mini-fab color="accent" type="button"
+        (click)="onAddFood()" aria-label="Example icon button with an add icon" class="add-button">
+          <mat-icon>add</mat-icon>
+        </button>
+        <div
+        *ngFor="let foodControl of foods.controls; let i = index">
+          <mat-form-field >
+            <input matInput placeholder="Favorite food"
+            [formControlName]="i">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+      </div> -->
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" type="submit">SUBMIT</button>
+  </mat-card-actions>
+</form>
+</mat-card>
+
