@@ -1,7 +1,9 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-form',
@@ -11,6 +13,9 @@ import { debounceTime } from 'rxjs/operators';
 export class FormComponent implements OnInit {
 
   myForm: FormGroup;
+  formData = new Subject();
+  show = false;
+  data;
 
   genders: string[] = ['female','male']
   ageOptions:string [] = ['under 18','18-35','36-50', '50 +']
@@ -32,6 +37,24 @@ export class FormComponent implements OnInit {
 
 
     this.myForm.get('personalInformation.firstName').valueChanges.pipe(debounceTime(1000)).subscribe( fN => console.log(fN))
+
+    // this.myForm.patchValue({
+    //   'personalInformation' : {
+    //     'firstName': 'Anna',
+    //     'lastName': 'Papadopoulou'
+    //   }
+    // })
+
+    // this.myForm.setValue({
+    //   'personalInformation' :{
+    //     'firstName':'John',
+    //     'lastName': 'Papadopoulos',
+    //     'age':'18-35'
+    //   },
+    //   'gender': 'male',
+    //   'genderChoice' : true,
+    //   'foods': []
+    // })
   }
 
   get foods() {
@@ -42,17 +65,13 @@ export class FormComponent implements OnInit {
     const control= new FormControl (null,Validators.required);
     this.foods.push(control);
 
-    // To bug pou eixa htan sto katw kwdika. Tis grammes 37-39 den tis eixa valei katholou kai sto html grami 76
-    // adi gia foods.controls eixa grapsei myForm.get('foods').value. to kollima itan oti den borousa na grapsw
-    // panw apo ena gramma sinexomeno sto input pou mou evgaze .eprepe kathe fora na kanw klik gia na grapsw ena akoma gramma
-
-    // const control= new FormControl (null,Validators.required);
-    // (<FormArray>this.myForm.get('foods')).push(control);
   }
 
   onSubmit() {
-    console.log(this.myForm)
+
+    console.log("form",this.myForm.value)
   }
+
 }
 
 
