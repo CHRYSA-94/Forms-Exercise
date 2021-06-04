@@ -1,23 +1,51 @@
 <mat-card >
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="container">
+  <form [formGroup]="myForm"
+  (ngSubmit)="onSubmit()"
+  #form="ngForm" class="container">
+
   <mat-card-header>
     <mat-card-title>Form Exercise</mat-card-title>
   </mat-card-header>
   <mat-card-content>
 
-
        <div formGroupName="personalInformation">
+        <div class="row">
+          <mat-form-field appearance="standard">
+            <mat-label>Id</mat-label>
+            <input matInput formControlName="id">
+          </mat-form-field>
+        </div>
         <div class="row">
           <mat-form-field appearance="standard">
             <mat-label>First Name</mat-label>
             <input matInput formControlName="firstName">
           </mat-form-field>
         </div>
+        <div class="error-message"
+        *ngIf="!myForm.get('personalInformation.firstName').valid && !myForm.get('personalInformation.firstName').pristine">
+         <p>Please enter a name with max 10 characters!</p>
+        </div>
+        <div class="error-message"
+        *ngIf="myForm.get('personalInformation.firstName').pristine && myForm.get('personalInformation.firstName').touched">
+         <p>First name is required!!</p>
+        </div>
+        <!-- <div class="error-message"
+        *ngIf="myForm.get('personalInformation.firstName').errors ? myForm.get('personalInformation.firstName').errors.required && form.submitted : false">
+         <p>First name is required!!</p>
+        </div> -->
         <div class="row">
           <mat-form-field appearance="standard">
             <mat-label>Last Name</mat-label>
             <input matInput formControlName="lastName">
           </mat-form-field>
+        </div>
+        <div class="error-message"
+        *ngIf="myForm.get('personalInformation.lastName').pristine && myForm.get('personalInformation.lastName').touched">
+         <p>Last name is required!!</p>
+        </div>
+        <div class="error-message"
+        *ngIf="myForm.get('personalInformation.lastName').errors? myForm.get('personalInformation.lastName').errors.minlength : false">
+         <p>Enter a last name with more than 3 characters!</p>
         </div>
         <div class="row">
           <mat-form-field appearance="standard" >
@@ -31,7 +59,25 @@
         </div>
        </div>
 
-
+       <div class="row">
+        <mat-form-field appearance="standard">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+        </mat-form-field>
+      </div>
+      <ng-container
+        *ngIf="!myForm.get('email').pristine && myForm.get('email').invalid">
+         <p class="error-message">Please enter a valid email!</p>
+      </ng-container>
+      <ng-container
+        *ngIf="myForm.get('email').touched && myForm.get('email').pristine">
+         <p class="error-message">Email is required!</p>
+      </ng-container>
+      <!-- Check when we click submit button -->
+      <!-- <ng-container
+        *ngIf="form.submitted && myForm.get('email').errors.required">
+         <p class="error-message">Email is required !</p>
+      </ng-container> -->
       <div class="row radio-container">
         <label id="example-radio-group-label">What's your gender?</label>
         <mat-radio-group formControlName="gender"
@@ -88,10 +134,12 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" type="submit">SUBMIT</button>
   </mat-card-actions>
+
 </form>
-  <p>
-    {{myForm.value |json}}
-  </p>
+<p>Is form submitted? {{form.submitted}}</p>
+<p>
+  {{myForm.value |json}}
+</p>
 
 </mat-card>
 
